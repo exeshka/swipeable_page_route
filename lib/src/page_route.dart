@@ -243,6 +243,18 @@ class SwipeablePageRoute<T> extends CupertinoPageRoute<T> {
     SwipeableTransitionBuilder? transitionBuilder,
   }) {
     final Widget wrappedChild;
+
+    final Animation<double> curvedAnimation = CurvedAnimation(
+      parent: animation,
+      curve: Curves.easeOut,
+    );
+
+  
+    double animationValue = curvedAnimation.value;
+
+  
+   final  paddings = MediaQuery.of(context).padding;
+
     if (route.fullscreenDialog) {
       wrappedChild = child;
     } else {
@@ -255,7 +267,12 @@ class SwipeablePageRoute<T> extends CupertinoPageRoute<T> {
         canOnlySwipeFromEdge: canOnlySwipeFromEdge,
         backGestureDetectionWidth: backGestureDetectionWidth,
         backGestureDetectionStartOffset: backGestureDetectionStartOffset,
-        child: child,
+        child: animationValue != 1
+            ? ClipRRect(
+                borderRadius: BorderRadius.circular(paddings.top), //кругление
+                child: child,
+              )
+            : child,
       );
     }
 
